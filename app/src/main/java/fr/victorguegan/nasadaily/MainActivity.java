@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     String response;
 
-    String API_URL = "https://api.nasa.gov/planetary/";
+    String API_URL = "https://api.nasa.gov/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 .build();
         texte.setText("milmei");
         NASA_Service service = retrofit.create(NASA_Service.class);
-        Call<NASA_Item> callAsync = service.getNASA_Item("apod?api_key=NjtGhAKtV5JsG1wyu9Kir7ZD70IQmu95VbPNGzJW");
+        Call<NASA_Item> callAsync = service.getNASA_Item("NjtGhAKtV5JsG1wyu9Kir7ZD70IQmu95VbPNGzJW");
         texte.setText("2");
         NASA_Call_Back call =  new NASA_Call_Back(image);
         texte.setText("3");
@@ -51,9 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
         callAsync.enqueue(call);
 
-        
 
-        Picasso.get().load("http://i.imgur.com/DvpvklR.png").into(image);
+
+
 
 
         NASA_Item user = null;
