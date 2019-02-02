@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView texte = this.findViewById(R.id.texte);
+        TextView texte = this.findViewById(R.id.description);
         ImageView image = this.findViewById(R.id.image);
 
 
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         NASA_Service service = retrofit.create(NASA_Service.class);
         Call<NASA_Item> callAsync = service.getNASA_Item("NjtGhAKtV5JsG1wyu9Kir7ZD70IQmu95VbPNGzJW");
         texte.setText("2");
-        NASA_Call_Back call =  new NASA_Call_Back(image);
+        NASA_Call_Back call =  new NASA_Call_Back(this);
         texte.setText("3");
         //((NASA_Call_Back) call).getItem();
 
