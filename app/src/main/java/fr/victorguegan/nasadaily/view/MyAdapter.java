@@ -1,6 +1,7 @@
 package fr.victorguegan.nasadaily.view;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,8 +61,17 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         //puis ajouter une fonction pour remplir la cellule en fonction d'un NASA_Item
         public void bind(NASA_Item myObject){
-            textViewView.setText(myObject.getTitle());
-            Picasso.get().load(myObject.getUrl()).into(imageView);
+            textViewView.setText(myObject.getTitle() + "\n"+ myObject.getDate());
+            if (myObject.getMediaType().equals("video")) {
+                String video_id = myObject.getUrl();
+                String s = video_id.split("/")[4];
+                String url = "https://img.youtube.com/vi/"+s.substring(0,s.length()-6)+"/hqdefault.jpg";
+                Log.d("TESTAT", myObject.getTitle()+" - "+url);
+                Picasso.get().load(url).into(imageView);
+            } else {
+                Picasso.get().load(myObject.getUrl()).into(imageView);
+            }
+
         }
     }
 

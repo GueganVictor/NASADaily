@@ -19,6 +19,8 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -54,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
 
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 
-        for (int i = 0; i < 30; i++) {
-            cal.add(Calendar.DAY_OF_MONTH, -1);
+        for (int i = 0; i < 10; i++) {
+
 
             OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
             Retrofit retrofit = new Retrofit.Builder()
@@ -85,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
                     NASA_Item item = response.body();
                     Log.d("TEST", item.getTitle() +" - "+ item.getUrl());
                     alNASA.add(item);
+                    Collections.sort(alNASA, Collections.<NASA_Item>reverseOrder());
                     recyclerView.setAdapter(new MyAdapter(alNASA));
                 }
 
@@ -94,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                     throwable.printStackTrace();
                 }
             });
+            cal.add(Calendar.DAY_OF_MONTH, -1);
         }
 
 
