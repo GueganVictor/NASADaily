@@ -7,6 +7,6 @@ import retrofit2.http.Query;
 public interface NASA_Service {
 
     @GET("planetary/apod")
-    public Call<NASA_Item> getNASA_Item(@Query("api_key") String api_key);
+    public Call<NASA_Item> getNASA_Item(@Query("api_key") String api_key, @Query("date") String date);
 
 }
