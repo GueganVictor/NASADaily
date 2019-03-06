@@ -4,7 +4,10 @@ package fr.victorguegan.nasadaily.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class NASA_Item {
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+public class NASA_Item implements Comparable<NASA_Item>{
 
     @SerializedName("copyright")
     @Expose
@@ -95,4 +98,23 @@ public class NASA_Item {
         this.url = url;
     }
 
+
+    @Override
+    public int compareTo(NASA_Item o) {
+        String current[] = this.date.split("-");
+        String compare[] = o.getDate().split("-");
+        if (Integer.parseInt(current[0]) == Integer.parseInt(compare[0])) {
+            if (Integer.parseInt(current[1]) == Integer.parseInt(compare[1])) {
+                if (Integer.parseInt(current[2]) == Integer.parseInt(compare[2])) {
+                    return 0;
+                } else{
+                    return Integer.compare(Integer.parseInt(current[2]), Integer.parseInt(compare[2]));
+                }
+            } else {
+                return Integer.compare(Integer.parseInt(current[1]), Integer.parseInt(compare[1]));
+            }
+        }
+        return Integer.compare(Integer.parseInt(current[0]), Integer.parseInt(compare[0]));
+
+    }
 }
