@@ -1,10 +1,12 @@
 package fr.victorguegan.nasadaily.view;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,13 +16,16 @@ import java.util.List;
 
 import fr.victorguegan.nasadaily.R;
 import fr.victorguegan.nasadaily.model.NASA_Item;
+import retrofit2.Callback;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
+    private final MainActivity act;
     List<NASA_Item> list;
 
     //ajouter un constructeur prenant en entrée une liste
-    public MyAdapter(List<NASA_Item> list) {
+    public MyAdapter(List<NASA_Item> list, MainActivity act) {
+        this.act = act;
         this.list = list;
     }
 
@@ -44,24 +49,29 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         return list.size();
     }
 
+
+
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         private TextView textViewView;
         private ImageView imageView;
+        private Button btn;
 
         //itemView est la vue correspondante à 1 cellule
         public MyViewHolder(View itemView) {
             super(itemView);
-
-            //c'est ici que l'on fait nos findView
-
             textViewView = (TextView) itemView.findViewById(R.id.text);
             imageView = (ImageView) itemView.findViewById(R.id.image);
+            btn = itemView.findViewById(R.id.button);
+
         }
 
         //puis ajouter une fonction pour remplir la cellule en fonction d'un NASA_Item
         public void bind(NASA_Item myObject){
-            textViewView.setText(myObject.getTitle() + "\n"+ myObject.getDate());
+            String title = myObject.getTitle() + "\n"+ myObject.getDate();
+            btn.setTag(myObject.getDate());
+            btn.setOnClickListener(act);
+            textViewView.setText(title);
             if (myObject.getMediaType().equals("video")) {
                 String video_id = myObject.getUrl();
                 String s = video_id.split("/")[4];
