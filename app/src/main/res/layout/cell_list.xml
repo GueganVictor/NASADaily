@@ -7,10 +7,6 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <!-- Les CardView agissent comme des FrameLayout,
-     pour avoir une organisation verticale nous devons
-     donc rajouter un LinearLayout -->
-
     <TextView
         android:id="@+id/text"
         android:layout_width="match_parent"
@@ -19,9 +15,9 @@
         android:fontFamily="sans-serif"
         android:padding="20dp"
         android:textAlignment="center"
-        android:textColor="#333"
-        android:textSize="18sp"
-        tools:text="Paris" />
+        android:textColor="@color/colorText"
+        android:textSize="24sp"
+        tools:text="Waiting for data" />
 
     <ImageView
         android:id="@+id/image"
@@ -29,10 +25,15 @@
         android:layout_height="200dp"
         android:scaleType="centerCrop" />
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:background="@color/colorAccent"
         android:text="@string/learn_more" />
 
 </LinearLayout>
