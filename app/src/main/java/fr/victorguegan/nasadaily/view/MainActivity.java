@@ -1,6 +1,8 @@
 package fr.victorguegan.nasadaily.view;
 
+import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -46,12 +48,23 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
 
     ArrayList<NASA_Item> alNASA;
     RecyclerView recyclerView;
+    private TextView textViewView;
+    private ImageView imageView;
+    private View btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.alNASA = new ArrayList<>();
         setContentView(R.layout.activity_main);
+
+        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/stargaze.ttf");
+        TextView tx = (TextView)findViewById(R.id.toolbar_title);
+        textViewView = (TextView) findViewById(R.id.text);
+        imageView = (ImageView) findViewById(R.id.image);
+        btn = findViewById(R.id.button);
+        tx.setTypeface(custom_font);
+
 
         Date today = new Date();
         Calendar cal = new GregorianCalendar();
@@ -63,8 +76,25 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         RetroFitClient r = new RetroFitClient();
 
 
-        for (int i = 0; i < 10; i++) {
-            Call<NASA_Item> callAsync = r.getService(API_URL).getNASA_Item(API_KEY, formatter.format(cal.getTime()));
+        Call<NASA_Item> callAsync = r.getService(API_URL).getNASA_Item(API_KEY, formatter.format(cal.getTime()));
+
+        callAsync.enqueue(new Callback<NASA_Item>() {
+            @Override
+            public void onResponse(Call<NASA_Item> call, Response<NASA_Item> response) {
+                NASA_Item item = response.body();
+
+            }
+
+            @Override
+            public void onFailure(Call<NASA_Item> call, Throwable throwable) {
+                System.out.println("Erreur dans la requête GET :");
+                throwable.printStackTrace();
+            }
+        });
+
+        for (int i = 1; i < 10; i++) {
+            cal.add(Calendar.DAY_OF_MONTH, -1);
+            callAsync = r.getService(API_URL).getNASA_Item(API_KEY, formatter.format(cal.getTime()));
             recyclerView = findViewById(R.id.recyclerView);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             //recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
@@ -84,7 +114,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                     throwable.printStackTrace();
                 }
             });
-            cal.add(Calendar.DAY_OF_MONTH, -1);
+
         }
 
     }
