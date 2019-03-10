@@ -14,7 +14,13 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import fr.victorguegan.nasadaily.R;
 import fr.victorguegan.nasadaily.model.NASA_Item;
@@ -56,6 +62,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public class MyViewHolder extends RecyclerView.ViewHolder{
 
         private TextView textViewView;
+        private TextView month;
+        private TextView day;
         private ImageView imageView;
         private Button btn;
 
@@ -63,6 +71,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         public MyViewHolder(View itemView) {
             super(itemView);
             textViewView = (TextView) itemView.findViewById(R.id.text);
+            month = (TextView) itemView.findViewById(R.id.month);
+            day = (TextView) itemView.findViewById(R.id.day);
             imageView = (ImageView) itemView.findViewById(R.id.image);
             btn = itemView.findViewById(R.id.button);
 
@@ -70,6 +80,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
 
         public void bind(NASA_Item myObject){
+            Calendar cal = new GregorianCalendar();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+            try {
+                cal.setTime(sdf.parse(myObject.getDate()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            sdf.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+            month.setText(new SimpleDateFormat("MMMM", Locale.ENGLISH).format(cal.getTime()));
+            day.setText(""+cal.get(Calendar.DAY_OF_MONTH));
             String title = myObject.getTitle();
             btn.setTag(myObject.getDate());
             btn.setOnClickListener(act);
