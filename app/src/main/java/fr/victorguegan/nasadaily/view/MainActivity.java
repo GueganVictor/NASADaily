@@ -2,6 +2,7 @@ package fr.victorguegan.nasadaily.view;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -92,13 +94,15 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
             }
         });
 
-        for (int i = 1; i < 10; i++) {
-            cal.add(Calendar.DAY_OF_MONTH, -1);
+        for (int i = 0; i < 10; i++) {
             callAsync = r.getService(API_URL).getNASA_Item(API_KEY, formatter.format(cal.getTime()));
             recyclerView = findViewById(R.id.recyclerView);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            //recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
+            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            } else {
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            }
             callAsync.enqueue(new Callback<NASA_Item>() {
                 @Override
                 public void onResponse(Call<NASA_Item> call, Response<NASA_Item> response) {
@@ -114,7 +118,7 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
                     throwable.printStackTrace();
                 }
             });
-
+            cal.add(Calendar.DAY_OF_MONTH, -1);
         }
 
     }
