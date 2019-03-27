@@ -1,17 +1,10 @@
 package fr.victorguegan.nasadaily.view;
 
-import android.content.Intent;
-import android.content.res.AssetManager;
-import android.graphics.Color;
-import android.graphics.LinearGradient;
-import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,17 +23,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import fr.victorguegan.nasadaily.R;
+import fr.victorguegan.nasadaily.controller.Utils;
 import fr.victorguegan.nasadaily.model.NASA_Item;
-import retrofit2.Callback;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
-    private final MainActivity act;
-    List<NASA_Item> list;
+    private final MainActivity context;
+    private List<NASA_Item> list;
 
 
-    public MyAdapter(List<NASA_Item> list, MainActivity act) {
-        this.act = act;
+    public MyAdapter(List<NASA_Item> list, MainActivity context) {
+        this.context = context;
         this.list = list;
     }
 
@@ -91,40 +84,28 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         }
 
 
-        public void bind(NASA_Item myObject){
+        public void bind(NASA_Item item){
             Calendar cal = new GregorianCalendar();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
             try {
-                cal.setTime(sdf.parse(myObject.getDate()));
+                cal.setTime(sdf.parse(item.getDate()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
             sdf.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
             month.setText(new SimpleDateFormat("MMMM", Locale.ENGLISH).format(cal.getTime()));
-            day.setText(""+cal.get(Calendar.DAY_OF_MONTH));
-            String title = myObject.getTitle();
-            linearLayout.setTag(myObject.getDate());
-            linearLayout.setOnClickListener(act);
-            Typeface custom_font = Typeface.createFromAsset(act.getAssets(),  "fonts/stellar.otf");
+            day.setText(String.format("%s",cal.get(Calendar.DAY_OF_MONTH)));
+            String title = item.getTitle();
+            linearLayout.setTag(item.getDate());
+            linearLayout.setOnClickListener(context);
+            Typeface custom_font = Typeface.createFromAsset(context.getAssets(),  "fonts/stellar.otf");
             textViewView.setTypeface(custom_font);
             textViewView.setText(title);
-
-
-
-
-            if (myObject.getMediaType().equals("video")) {
-                String url = myObject.getUrl();
-                String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
-                Pattern compiledPattern = Pattern.compile(pattern);
-                Matcher matcher = compiledPattern.matcher(url); //url is youtube url for which you want to extract the id.
-                String id = "";
-                if (matcher.find()) {
-                    id = matcher.group();
-                }
-                url = "https://img.youtube.com/vi/"+id+"/hqdefault.jpg";
+            if (item.getMediaType().equals("video")) {
+                String url = "https://img.youtube.com/vi/"+ Utils.getYoutubeIDFromURL(item.getUrl()) +"/hqdefault.jpg";
                 Picasso.get().load(url).into(imageView);
             } else {
-                Picasso.get().load(myObject.getUrl()).into(imageView);
+                Picasso.get().load(item.getUrl()).into(imageView);
             }
         }
     }

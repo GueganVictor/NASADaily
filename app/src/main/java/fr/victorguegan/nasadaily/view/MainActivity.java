@@ -32,6 +32,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import fr.victorguegan.nasadaily.R;
+import fr.victorguegan.nasadaily.controller.MainController;
 import fr.victorguegan.nasadaily.controller.RetroFitClient;
 import fr.victorguegan.nasadaily.model.NASA_Call_Back;
 import fr.victorguegan.nasadaily.model.NASA_Item;
@@ -45,85 +46,29 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity  implements View.OnClickListener{
 
-    static final String API_URL = "https://api.nasa.gov/";
-    static final String API_KEY = "NjtGhAKtV5JsG1wyu9Kir7ZD70IQmu95VbPNGzJW";
+    public MainController controller;
 
-    public int cpt = 0;
-
-    ArrayList<NASA_Item> alNASA;
     RecyclerView recyclerView;
-    private TextView textViewView;
-    private ImageView imageView;
-    private View btn;
+    private TextView textTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.alNASA = new ArrayList<>();
         setContentView(R.layout.activity_main);
-
-        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/stargaze.ttf");
-        TextView tx = (TextView)findViewById(R.id.toolbar_title);
-        textViewView = (TextView) findViewById(R.id.text);
-        imageView = (ImageView) findViewById(R.id.image);
-        tx.setTypeface(custom_font);
-
-
-        Date today = new Date();
-        Calendar cal = new GregorianCalendar();
-        cal.setTime(today);
-
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        formatter.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
-
-        RetroFitClient r = new RetroFitClient();
-
-
-        Call<NASA_Item> callAsync = r.getService(API_URL).getNASA_Item(API_KEY, formatter.format(cal.getTime()));
-
-        callAsync.enqueue(new Callback<NASA_Item>() {
-            @Override
-            public void onResponse(Call<NASA_Item> call, Response<NASA_Item> response) {
-                NASA_Item item = response.body();
-
-            }
-
-            @Override
-            public void onFailure(Call<NASA_Item> call, Throwable throwable) {
-                System.out.println("Erreur dans la requête GET :");
-                throwable.printStackTrace();
-            }
-        });
-
-        for (int i = 0; i < 10; i++) {
-            callAsync = r.getService(API_URL).getNASA_Item(API_KEY, formatter.format(cal.getTime()));
-            recyclerView = findViewById(R.id.recyclerView);
-
-            if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-                recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-            } else {
-                recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            }
-            callAsync.enqueue(new Callback<NASA_Item>() {
-                @Override
-                public void onResponse(Call<NASA_Item> call, Response<NASA_Item> response) {
-                    NASA_Item item = response.body();
-                    alNASA.add(item);
-                    Collections.sort(alNASA, Collections.<NASA_Item>reverseOrder());
-                    recyclerView.setAdapter(new MyAdapter(alNASA, MainActivity.this));
-                }
-
-                @Override
-                public void onFailure(Call<NASA_Item> call, Throwable throwable) {
-                    System.out.println("Erreur dans la requête GET :");
-                    throwable.printStackTrace();
-                }
-            });
-            cal.add(Calendar.DAY_OF_MONTH, -1);
-        }
-
+        this.setViews();
+        this.setFont();
+        controller = new MainController(this);
+        controller.start();
     }
 
+    public void setViews() {
+        textTitle = findViewById(R.id.toolbar_title);
+    }
+
+    public void setFont() {
+        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/stargaze.ttf");
+        textTitle.setTypeface(custom_font);
+    }
 
     @Override
     public void onClick(View v) {
@@ -136,4 +81,13 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     }
 
 
+    public void showList(List<NASA_Item> list) {
+        recyclerView = findViewById(R.id.recyclerView);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        } else {
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        }
+        recyclerView.setAdapter(new MyAdapter(list, MainActivity.this));
+    }
 }
