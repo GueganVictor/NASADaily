@@ -1,13 +1,18 @@
 package fr.victorguegan.nasadaily.view;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.gesture.Gesture;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.polites.android.GestureImageView;
 import com.squareup.picasso.Picasso;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import fr.victorguegan.nasadaily.R;
 import fr.victorguegan.nasadaily.controller.RetroFitClient;
@@ -25,7 +30,7 @@ public class Detail extends AppCompatActivity {
 
     TextView textDesc;
     TextView textTitle;
-    ImageView imageView;
+    GestureImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +40,7 @@ public class Detail extends AppCompatActivity {
         date = myIntent.getStringExtra("date");
         textDesc = (TextView)findViewById(R.id.desc);
         textTitle = (TextView)findViewById(R.id.title);
-        imageView = (ImageView)findViewById(R.id.image);
+        imageView = findViewById(R.id.image);
 
 
         RetroFitClient r = new RetroFitClient();
@@ -50,9 +55,18 @@ public class Detail extends AppCompatActivity {
                 textDesc.setText(myObject.getExplanation());
 
                 if (myObject.getMediaType().equals("video")) {
-                    String video_id = myObject.getUrl();
-                    String s = video_id.split("/")[4];
-                    String url = "https://img.youtube.com/vi/"+s.substring(0,s.length()-6)+"/hqdefault.jpg";
+
+                    String url = myObject.getUrl();
+                    String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
+                    Pattern compiledPattern = Pattern.compile(pattern);
+                    Matcher matcher = compiledPattern.matcher(url); //url is youtube url for which you want to extract the id.
+                    String id = "";
+                    if (matcher.find()) {
+                         id = matcher.group();
+                    }
+                    url = "https://img.youtube.com/vi/"+id+"/hqdefault.jpg";
+
+
                     Picasso.get().load(url).into(imageView);
                 } else {
                     Picasso.get().load(myObject.getUrl()).into(imageView);

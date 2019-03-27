@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
     static final String API_URL = "https://api.nasa.gov/";
     static final String API_KEY = "NjtGhAKtV5JsG1wyu9Kir7ZD70IQmu95VbPNGzJW";
 
+    public int cpt = 0;
+
     ArrayList<NASA_Item> alNASA;
     RecyclerView recyclerView;
     private TextView textViewView;
@@ -64,7 +66,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         TextView tx = (TextView)findViewById(R.id.toolbar_title);
         textViewView = (TextView) findViewById(R.id.text);
         imageView = (ImageView) findViewById(R.id.image);
-        btn = findViewById(R.id.button);
         tx.setTypeface(custom_font);
 
 

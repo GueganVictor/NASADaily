@@ -2,6 +2,9 @@ package fr.victorguegan.nasadaily.view;
 
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -20,7 +24,10 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import fr.victorguegan.nasadaily.R;
 import fr.victorguegan.nasadaily.model.NASA_Item;
@@ -65,17 +72,22 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         private TextView month;
         private TextView day;
         private ImageView imageView;
-        private Button btn;
+        private LinearLayout linearLayout;
+
 
 
         public MyViewHolder(View itemView) {
             super(itemView);
             textViewView = (TextView) itemView.findViewById(R.id.text);
+            linearLayout = (LinearLayout) itemView.findViewById(R.id.linear);
             month = (TextView) itemView.findViewById(R.id.month);
             day = (TextView) itemView.findViewById(R.id.day);
             imageView = (ImageView) itemView.findViewById(R.id.image);
-            btn = itemView.findViewById(R.id.button);
 
+
+            int r = new Random().nextInt(5);
+            int grads[] = {R.drawable.grad1, R.drawable.grad2, R.drawable.grad3, R.drawable.grad4, R.drawable.grad5};
+            itemView.setBackgroundResource(grads[r]);
         }
 
 
@@ -91,18 +103,25 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             month.setText(new SimpleDateFormat("MMMM", Locale.ENGLISH).format(cal.getTime()));
             day.setText(""+cal.get(Calendar.DAY_OF_MONTH));
             String title = myObject.getTitle();
-            btn.setTag(myObject.getDate());
-            btn.setOnClickListener(act);
+            linearLayout.setTag(myObject.getDate());
+            linearLayout.setOnClickListener(act);
             Typeface custom_font = Typeface.createFromAsset(act.getAssets(),  "fonts/stellar.otf");
-            btn.setTypeface(custom_font);
-            btn.setText(btn.getText().toString().toUpperCase());
             textViewView.setTypeface(custom_font);
             textViewView.setText(title);
 
+
+
+
             if (myObject.getMediaType().equals("video")) {
-                String video_id = myObject.getUrl();
-                String s = video_id.split("/")[4];
-                String url = "https://img.youtube.com/vi/"+s.substring(0,s.length()-6)+"/hqdefault.jpg";
+                String url = myObject.getUrl();
+                String pattern = "(?<=watch\\?v=|/videos/|embed\\/|youtu.be\\/|\\/v\\/|\\/e\\/|watch\\?v%3D|watch\\?feature=player_embedded&v=|%2Fvideos%2F|embed%\u200C\u200B2F|youtu.be%2F|%2Fv%2F)[^#\\&\\?\\n]*";
+                Pattern compiledPattern = Pattern.compile(pattern);
+                Matcher matcher = compiledPattern.matcher(url); //url is youtube url for which you want to extract the id.
+                String id = "";
+                if (matcher.find()) {
+                    id = matcher.group();
+                }
+                url = "https://img.youtube.com/vi/"+id+"/hqdefault.jpg";
                 Picasso.get().load(url).into(imageView);
             } else {
                 Picasso.get().load(myObject.getUrl()).into(imageView);
