@@ -7,6 +7,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetroFitClient {
 
+    public static final String API_URL = "https://api.nasa.gov/";
+    public static final String API_KEY = "NjtGhAKtV5JsG1wyu9Kir7ZD70IQmu95VbPNGzJW";
+
     public NASA_Service getService (String url) {
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
         Retrofit retrofit = new Retrofit.Builder()
