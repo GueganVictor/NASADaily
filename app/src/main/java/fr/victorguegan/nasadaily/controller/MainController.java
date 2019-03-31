@@ -1,5 +1,7 @@
 package fr.victorguegan.nasadaily.controller;
 
+import android.content.Intent;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -10,6 +12,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import fr.victorguegan.nasadaily.model.NASA_Item;
+import fr.victorguegan.nasadaily.view.Detail;
 import fr.victorguegan.nasadaily.view.MainActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,5 +61,6 @@ public class MainController {
         }
 
     }
+
 
 }
