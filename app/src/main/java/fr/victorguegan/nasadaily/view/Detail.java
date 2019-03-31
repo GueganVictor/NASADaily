@@ -1,11 +1,14 @@
 package fr.victorguegan.nasadaily.view;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.TransitionInflater;
 import android.widget.TextView;
 
 import com.polites.android.GestureImageView;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.regex.Matcher;
@@ -22,6 +25,7 @@ public class Detail extends AppCompatActivity {
 
     private String date;
 
+    private Bundle extras;
     TextView textDesc;
     TextView textTitle;
     GestureImageView imageView;
@@ -33,6 +37,12 @@ public class Detail extends AppCompatActivity {
         Intent myIntent = getIntent();
         this.date = myIntent.getStringExtra("date");
         this.setViews();
+        extras = getIntent().getExtras();
+        NASA_Item item = extras.getParcelable("item");
+        this.showNASA_Item(item);
+
+
+
         this.controller = new DetailController(this);
         this.controller.start();
     }
@@ -50,13 +60,22 @@ public class Detail extends AppCompatActivity {
         String title = item.getTitle() + "\n"+ item.getDate();
         textTitle.setText(title);
         textDesc.setText(item.getExplanation());
+        String imageTransitionName = extras.getString("transition");
+        imageView.setTransitionName(imageTransitionName);
 
-        if (item.getMediaType().equals("video")) {
-            String url = "https://img.youtube.com/vi/"+ Utils.getYoutubeIDFromURL(item.getUrl()) +"/hqdefault.jpg";
-            Picasso.get().load(url).into(imageView);
-        } else {
-            Picasso.get().load(item.getUrl()).into(imageView);
-        }
+        Picasso.get().load(item.getUrl()).noFade().into(imageView,
+            new Callback() {
+                @Override
+                public void onSuccess() {
+                    supportStartPostponedEnterTransition();
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    supportStartPostponedEnterTransition();
+                }
+            }
+        );
 
     }
 

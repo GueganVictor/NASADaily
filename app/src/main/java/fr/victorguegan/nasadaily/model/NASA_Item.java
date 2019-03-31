@@ -1,13 +1,16 @@
 
 package fr.victorguegan.nasadaily.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public class NASA_Item implements Comparable<NASA_Item>{
+public class NASA_Item implements Comparable<NASA_Item>, Parcelable {
 
     @SerializedName("copyright")
     @Expose
@@ -116,5 +119,40 @@ public class NASA_Item implements Comparable<NASA_Item>{
         }
         return Integer.compare(Integer.parseInt(current[0]), Integer.parseInt(compare[0]));
 
+    }
+
+    protected NASA_Item(Parcel in) {
+        explanation = in.readString();
+        title = in.readString();
+        url = in.readString();
+        mediaType = in.readString();
+        date = in.readString();
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<NASA_Item> CREATOR = new Parcelable.Creator<NASA_Item>() {
+        @Override
+        public NASA_Item createFromParcel(Parcel in) {
+            return new NASA_Item(in);
+        }
+
+        @Override
+        public NASA_Item[] newArray(int size) {
+            return new NASA_Item[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(explanation);
+        dest.writeString(title);
+        dest.writeString(url);
+        dest.writeString(mediaType);
+        dest.writeString(date);
     }
 }
