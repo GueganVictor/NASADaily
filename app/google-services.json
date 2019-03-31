@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1034397923662",
+    "firebase_url": "https://nasadaily-7222b.firebaseio.com",
+    "project_id": "nasadaily-7222b",
+    "storage_bucket": "nasadaily-7222b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1034397923662:android:dd3519c5562a796a",
+        "android_client_info": {
+          "package_name": "fr.victorguegan.nasadaily"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1034397923662-epu7190ploh1b3gl6j202kruuhgg3l6k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCG_C8X1aa6wf0mcm2nc8Eyve3IrS8u-qs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
