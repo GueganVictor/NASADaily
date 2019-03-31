@@ -6,9 +6,11 @@ import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,6 +36,7 @@ import java.util.TimeZone;
 import fr.victorguegan.nasadaily.R;
 import fr.victorguegan.nasadaily.controller.MainController;
 import fr.victorguegan.nasadaily.controller.RetroFitClient;
+import fr.victorguegan.nasadaily.model.ItemClickListener;
 import fr.victorguegan.nasadaily.model.NASA_Call_Back;
 import fr.victorguegan.nasadaily.model.NASA_Item;
 import fr.victorguegan.nasadaily.model.NASA_Service;
@@ -44,7 +47,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class MainActivity extends AppCompatActivity  implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity  implements ItemClickListener {
 
     public MainController controller;
 
@@ -70,16 +73,6 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         textTitle.setTypeface(custom_font);
     }
 
-    @Override
-    public void onClick(View v) {
-
-        Intent intentMain = new Intent(MainActivity.this ,
-                Detail.class);
-        intentMain.putExtra("date",(String) v.getTag());
-        MainActivity.this.startActivity(intentMain);
-
-    }
-
 
     public void showList(List<NASA_Item> list) {
         recyclerView = findViewById(R.id.recyclerView);
@@ -88,6 +81,19 @@ public class MainActivity extends AppCompatActivity  implements View.OnClickList
         } else {
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
         }
-        recyclerView.setAdapter(new MyAdapter(list, MainActivity.this));
+        recyclerView.setAdapter(new MyAdapter(list, this));
+    }
+
+    @Override
+    public void onItemClick(NASA_Item item, ImageView imageView) {
+        Intent intent = new Intent(this, Detail.class);
+        intent.putExtra("item", item);
+        intent.putExtra("transition", ViewCompat.getTransitionName(imageView));
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this, imageView, ViewCompat.getTransitionName(imageView));
+
+        startActivity(intent, options.toBundle());
+
     }
 }
