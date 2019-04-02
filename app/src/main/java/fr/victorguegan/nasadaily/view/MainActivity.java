@@ -1,6 +1,7 @@
 package fr.victorguegan.nasadaily.view;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -124,8 +126,24 @@ public class MainActivity extends AppCompatActivity  implements ItemClickListene
 
     @Override
     public void onClick(View v) {
-        new DatePickerDialog(MainActivity.this, date, myCalendar
-                .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-YYYY", Locale.US);
+        Date d;
+        Calendar c = Calendar.getInstance();
+        c.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+        DatePickerDialog dp = new DatePickerDialog(MainActivity.this, this.date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)-1);
+        c.add(Calendar.DAY_OF_MONTH,-1);
+        try {
+            d = format.parse("16-06-1996");
+            c.setTime(d);
+            dp.getDatePicker().setMinDate(c.getTimeInMillis());
+        } catch (ParseException e) { e.printStackTrace(); }
+
+        dp.show();
     }
+
+    @Override
+    public void onBackPressed() {
+        //do noting
+    }
+
 }
