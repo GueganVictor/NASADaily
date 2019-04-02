@@ -16,13 +16,15 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".view.Detail" />
-        <activity android:name=".view.MainActivity">
+        <activity android:name=".view.MainActivity" />
+        <activity android:name=".view.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
