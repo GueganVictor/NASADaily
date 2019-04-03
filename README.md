@@ -18,6 +18,7 @@ Pour cela, l'application passe par une API que la NASA a ouvert au public.
 - Affichage d'une liste dans un ***RecyclerView***
 - Affichage du détail d'un item de la liste
 - ***Gitflow*** propre
+- Notifications via ***Firebase***
 <br/>
 - **Fonctions supplémentaires** :
 	- Recherche par date
@@ -51,3 +52,12 @@ Si vous souhaitez pour retourner dans le temps et regarder une photo plus veille
 Vous serez limité à 1996, aucune donnée n'étant disponible pour une date antérieure. 
 
 ![Datepicker with detail screen](http://victorguegan.fr/NASADaily/img/date_picker.jpg)
+
+
+### Notifications Firebase
+
+Tous les jours, vous serez rappelé d'aller consulter l'image nouvellement postée par la NASA !
+
+![Notification screen](http://victorguegan.fr/NASADaily/img/notif.jpg)
+
+
