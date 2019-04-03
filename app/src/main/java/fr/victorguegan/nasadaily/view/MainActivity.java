@@ -132,12 +132,12 @@ public class MainActivity extends AppCompatActivity  implements ItemClickListene
         c.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
         DatePickerDialog dp = new DatePickerDialog(MainActivity.this, this.date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)-1);
         c.add(Calendar.DAY_OF_MONTH,-1);
+        dp.getDatePicker().setMaxDate(c.getTimeInMillis());
         try {
             d = format.parse("16-06-1996");
             c.setTime(d);
             dp.getDatePicker().setMinDate(c.getTimeInMillis());
         } catch (ParseException e) { e.printStackTrace(); }
-
         dp.show();
     }
 
