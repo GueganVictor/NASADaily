@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="fr.victorguegan.nasadaily">
+    package="fr.victorguegan">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -15,9 +14,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".view.Detail" />
-        <activity android:name=".view.MainActivity" />
-        <activity android:name=".view.SplashScreen">
+        <activity android:name="fr.victorguegan.view.Detail" />
+        <activity android:name="fr.victorguegan.view.MainActivity" />
+        <activity android:name="fr.victorguegan.view.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
