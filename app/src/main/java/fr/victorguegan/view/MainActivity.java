@@ -12,10 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.view.ViewCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,10 +36,13 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
 
     public MainController controller;
 
+    private MyAdapter adapter;
+
     private Calendar myCalendar = Calendar.getInstance();
     RecyclerView recyclerView;
     private TextView textTitle;
     private ImageButton button;
+    private SearchView searchView;
     DatePickerDialog.OnDateSetListener date;
 
     @Override
@@ -49,6 +51,19 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         setContentView(R.layout.activity_main);
         this.setViews();
         this.setFont();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String text) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String text) {
+                adapter.getFilter().filter(text);
+                return true;
+            }
+        });
 
         date = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -69,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         textTitle = findViewById(R.id.toolbar_title);
         button = findViewById(R.id.button);
         button.setOnClickListener(this);
+        searchView = findViewById(R.id.search);
     }
 
     public void setFont() {
@@ -90,7 +106,8 @@ public class MainActivity extends AppCompatActivity implements ItemClickListener
         } else {
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
         }
-        recyclerView.setAdapter(new MyAdapter(list, this));
+        adapter = new MyAdapter(list, this);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
