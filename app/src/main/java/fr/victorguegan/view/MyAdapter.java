@@ -4,6 +4,8 @@ import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,6 +16,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -27,11 +30,50 @@ import fr.victorguegan.model.ItemClickListener;
 import fr.victorguegan.model.NASA_Item;
 
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> implements Filterable {
     //private final AdapterView.OnItemClickListener listener;
     private List<NASA_Item> local_Dataset;
+    private List<NASA_Item> base_Dataset;
     private final MainActivity context;
     private final ItemClickListener listener;
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @SuppressWarnings("unchecked")
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                local_Dataset = (List<NASA_Item>) results.values;
+                notifyDataSetChanged();
+            }
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                List<NASA_Item> filteredResults = null;
+                if (constraint.length() == 0) {
+                    filteredResults = base_Dataset;
+                } else {
+                    filteredResults = getFilteredResults(constraint.toString().toLowerCase());
+                }
+
+                FilterResults results = new FilterResults();
+                results.values = filteredResults;
+
+                return results;
+            }
+        };
+    }
+
+    protected List<NASA_Item> getFilteredResults(String constraint) {
+        List<NASA_Item> results = new ArrayList<>();
+
+        for (NASA_Item item : base_Dataset) {
+            if (item.getTitle().toLowerCase().contains(constraint)) {
+                results.add(item);
+            }
+        }
+        return results;
+    }
 
     //gere la vue de chaque donnee
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -60,7 +102,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public MyAdapter(List<NASA_Item> myDataset, MainActivity context){
         this.listener = context;
         this.context = context;
-        local_Dataset = myDataset;
+        local_Dataset = (myDataset);
+        base_Dataset = (myDataset);
     }
 
     //creation des nouvelles vues par le layout manager
@@ -72,6 +115,23 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
         MyViewHolder vh = new MyViewHolder(v);
         return vh;
+    }
+
+
+    public void filter(String text) {
+
+        local_Dataset.clear();
+        if(text.isEmpty()){
+            local_Dataset.addAll(base_Dataset);
+        } else{
+            text = text.toLowerCase();
+            for(NASA_Item item: base_Dataset){
+                if(item.getTitle().toLowerCase().contains(text)){
+                    local_Dataset.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     //remplace le contenu de la vue
