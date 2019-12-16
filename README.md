@@ -2,11 +2,11 @@
 
 ## Présentation
 
-**Projet Android de 3ème année à l'ESIEA.**
+**Projet Android de 4ème année à l'ESIEA.**
 
 Petit projet démontrant l'utilisation du pattern MVC dans une application Android, codé en Java.
 <br/>Cette application permet l'affichage d'une liste des 10 dernières photos que la NASA poste tous les jours.
-<br/>Vous y trouverez aussi une fonction de recherche par date pour revenir dans le temps.
+<br/>Vous y trouverez aussi une fonction de recherche par date pour revenir dans le temps ainsi qu'une fonction de recherche par titre.
 
 Pour cela, l'application passe par une API que la NASA a ouvert au public.
 
@@ -18,10 +18,15 @@ Pour cela, l'application passe par une API que la NASA a ouvert au public.
 - Affichage d'une liste dans un ***RecyclerView***
 - Affichage du détail d'un item de la liste
 - ***Gitflow*** propre
-- Notifications via ***Firebase***
-<br/>
-- **Fonctions supplémentaires** :
-	- Recherche par date
+- ***Material Design*** propre
+
+## Fonctions supplémentaires :
+
+- Recherche par date<br/>
+- Recherche par titre<br/>
+- Stockage ***cache***<br/>
+- Notifications via ***Firebase***<br/>
+- Zoom sur les photos
 
 
 ## Fonctionnalités: 
@@ -34,9 +39,11 @@ Pour cela, l'application passe par une API que la NASA a ouvert au public.
 
 ### Écran d'accueil 
 
-- Affiche la liste des pokémons avec une barre de recherche.
+- Affiche la liste des images et leur titre. On peut aussi y choisir de rechercher une veille publication par sa date ou alors de chercher parmi les photos actuelles selon son titre.
 
 ![Homescreen](http://victorguegan.fr/NASADaily/img/home.jpg)
+
+![HomeScreenSearch](http://victorguegan.fr/NASADaily/img/home_searched.jpg)
 
 ### Écran du détail de la photo
 
