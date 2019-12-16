@@ -41,9 +41,9 @@ Pour cela, l'application passe par une API que la NASA a ouvert au public.
 
 - Affiche la liste des images et leur titre. On peut aussi y choisir de rechercher une veille publication par sa date ou alors de chercher parmi les photos actuelles selon son titre.
 
-![Homescreen](http://victorguegan.fr/NASADaily/img/home.jpg)
+![Home](http://victorguegan.fr/NASADaily/img/home1.jpg)
 
-![HomeScreenSearch](http://victorguegan.fr/NASADaily/img/home_searched.jpg)
+![HomeSearch](http://victorguegan.fr/NASADaily/img/home_searched1.jpg)
 
 ### Écran du détail de la photo
 
@@ -51,7 +51,7 @@ Pour cela, l'application passe par une API que la NASA a ouvert au public.
 - Possibilité de zoomer sur l'image pour observer plus de détails
 - Petit paragraphe explicatif en anglais sur le pourquoi du comment de la photo
 
-![Detailscreen](http://victorguegan.fr/NASADaily/img/detail.jpg)
+![DetailScreen](http://victorguegan.fr/NASADaily/img/detail1.jpg)
 
 ### Selection par date
 
