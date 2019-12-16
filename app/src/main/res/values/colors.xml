@@ -6,4 +6,5 @@
     <color name="colorText">#F5F5F5</color>
     <color name="colorStatusBar">#012435</color>
     <color name="colorBack">#AFAFAF</color>
+    <color name="colorButton">#B10000</color>
 </resources>
